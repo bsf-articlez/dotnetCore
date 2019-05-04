@@ -1,0 +1,64 @@
+﻿@model Machine
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Vending Machine</h1>
+<div class="float-right">
+    <form asp-action="TakeMoney" asp-controller="Machines" method="put">
+        <button class="btn btn-outline-dark" name="isOpened" value="@Model.IsOpened.ToString()">Open/Close</button>
+    </form>
+
+    @if (Model.IsOpened)
+    {
+        <h4 class="text-danger">Opened</h4>
+    }
+    else
+    {
+        <h4 class="text-primary">Closed</h4>
+    }
+</div>
+
+<form asp-action="PowerMachine" asp-controller="Machines" method="put">
+    <button class="btn btn-danger" name="isPowerOn" value="@Model.IsPowerOn.ToString()">Power</button>
+</form>
+@if (Model.IsPowerOn)
+{
+    <h4 class="text-success">ON</h4>
+}
+else
+{
+    <h4 class="text-danger">OFF</h4>
+}
+
+<div class="card border-dark shadow my-4">
+    <div class="card-body">
+        <div class="float-right p-2 px-3 bg-dark text-light rounded">
+            <div>Total amount</div>
+            <h4 class="m-0">@Model.TotalAmount THB</h4>
+        </div>
+
+        Please add a coin
+        <form asp-action="InsertCoin" asp-controller="Machines" method="post">
+            <button class="btn btn-outline-secondary" name="amount" value="1">1</button>
+            <button class="btn btn-outline-secondary" name="amount" value="5">5</button>
+            <button class="btn btn-outline-secondary" name="amount" value="10">10</button>
+        </form>
+    </div>
+</div>
+
+@if (Model.TotalAmount < 200)
+{
+    <div class="text-success">Please add more!!!</div>
+}
+else
+{
+    <div class="text-danger">Thanks !!</div>
+}
+
+@if (Model.TotalAmount > 0)
+{
+    <form asp-action="CancelCoin" asp-controller="Machines" method="post">
+        <button class="btn btn-outline-warning mt-2">Cancel</button>
+    </form>
+}

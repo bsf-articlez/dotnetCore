@@ -1,0 +1,10 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome @Html.Raw(ViewBag.Country).</h1>
+    My name is @ViewBag.MyName.
+    <button class="btn btn-outline-info mb-3 p-3">Contact Me</button>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
