@@ -1,19 +1,17 @@
-﻿namespace Mvc01.Models
+﻿using System;
+
+namespace Mvc01.Models
 {
     public class Machine
     {
         // backing fields => field use with property.
         private decimal _totalAmount = 0;
-        private bool _isPowerOn = false;
-        private bool _isOpened = false;
         private bool _isOn = false;
         private bool _isLidOpen = false;
         
         public decimal TotalAmount => _totalAmount;
-        public bool IsPowerOn => _isPowerOn;
-        public bool IsOpened => _isOpened;
         public bool IsOn => _isOn;
-        public bool _ILidOpen => _isLidOpen;
+        public bool IsLidOpen => _isLidOpen;
 
         public void TogglePower()
         {
@@ -42,36 +40,26 @@
         private void TurnOff()
         {
             _isOn = false;
+
             CancelBuying();
+        }
+
+        public void ToggleLid()
+        {
+            if (_isLidOpen) CloseLid();
+            else OpenLid();
         }
 
         public void AcceptsCoin(decimal amount)
         {
+            if (!_isOn) return;
+
             _totalAmount += amount;
         }
 
         public void ResetAmount()
         {
             _totalAmount = 0;
-        }
-
-        public void PowerOn()
-        {
-            _isPowerOn = true;
-        }
-
-        public void PowerOff()
-        {
-            _isPowerOn = false;
-        }
-        public void Open()
-        {
-            _isOpened = true;
-        }
-
-        public void Close()
-        {
-            _isOpened = false;
         }
 
         public void CancelBuying()

@@ -8,18 +8,24 @@
     <div class="card-body">
         <div class="custom-switch">
             <form id="frm1" asp-action="TogglePower" asp-controller="Machines" method="post">
-                <input type="checkbox" checked="@Model.IsOn" class="custom-control-input" id="customSwitch1" onchange="frm1.submit()">
+                <input type="checkbox" checked="@(Model.IsOn)" class="custom-control-input" id="customSwitch1" onchange="frm1.submit()">
                 <label class="custom-control-label" for="customSwitch1">Power On/Off</label>
+            </form>
+        </div>
+        <div class="custom-switch">
+            <form id="frm2" asp-action="ToggleLid" asp-controller="Machines" method="post">
+                <input type="checkbox" checked="@(Model.IsLidOpen)" class="custom-control-input" id="customSwitch2" onchange="frm2.submit()">
+                <label class="custom-control-label" for="customSwitch2">Lid On/Off</label>
             </form>
         </div>
     </div>
 </div>
 <div class="float-right">
-    <form asp-action="TakeMoney" asp-controller="Machines" method="put">
-        <button class="btn btn-outline-dark" name="isOpened" value="@Model.IsOpened.ToString()">Open/Close</button>
+    <form asp-action="ToggleLid" asp-controller="Machines" method="put">
+        <button class="btn btn-outline-dark" name="isOpened">Open/Close</button>
     </form>
 
-    @if (Model.IsOpened)
+    @if (Model.IsLidOpen)
     {
         <h4 class="text-danger">Opened</h4>
     }
@@ -30,11 +36,11 @@
 </div>
 
 <div class="mt-3">
-    <form asp-action="PowerMachine" asp-controller="Machines" method="put">
-        <button class="btn btn-danger" name="isPowerOn" value="@Model.IsPowerOn.ToString()">Power</button>
+    <form asp-action="TogglePower" asp-controller="Machines" method="put">
+        <button class="btn btn-danger" name="isPowerOn">Power</button>
     </form>
 </div>
-@if (Model.IsPowerOn)
+@if (Model.IsOn)
 {
     <h4 class="text-success">ON</h4>
 }
@@ -45,7 +51,7 @@ else
 
 <div class="card border-dark shadow my-4">
     <div class="card-body">
-        <div class="float-right p-2 px-3 bg-dark text-light rounded">
+        <div class="float-right text-center p-2 px-3 bg-dark text-light rounded">
             <div>Total amount</div>
             <h4 class="m-0">@Model.TotalAmount THB</h4>
         </div>
@@ -70,7 +76,7 @@ else
 
 @if (Model.TotalAmount > 0)
 {
-    <form asp-action="CancelCoin" asp-controller="Machines" method="post">
-        <button class="btn btn-outline-warning mt-2">Cancel</button>
+    <form asp-controller="Machines" method="post">
+        <button class="btn btn-outline-warning mt-2" asp-action="CancelBuying">Cancel</button>
     </form>
 }
