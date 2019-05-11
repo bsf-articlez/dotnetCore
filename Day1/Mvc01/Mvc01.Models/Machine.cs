@@ -67,11 +67,6 @@ namespace Mvc01.Models
             _totalAmount += amount;
         }
 
-        public void ResetAmount()
-        {
-            _totalAmount = 0;
-        }
-
         public void CancelBuying()
         {
             _totalAmount = 0m;
