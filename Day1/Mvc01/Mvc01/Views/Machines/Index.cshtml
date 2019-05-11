@@ -3,7 +3,11 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Vending Machine @Model.Id</h1>
+@*<h1>Vending Machine @Model.Id</h1>*@
+<h1>Vending Machine <select id="ddlMachine" asp-items="@ViewBag.MachineList"></select></h1>
+
+@*<select id="ddlMachine" asp-items="@ViewBag.MachineList"></select>*@
+
 <div class="card">
     <div class="card-body">
         <div class="custom-switch">
@@ -79,4 +83,19 @@ else
     <form asp-controller="Machines" method="post">
         <button class="btn btn-outline-warning mt-2" asp-action="CancelBuying" asp-route-id="@Model.Id">Cancel</button>
     </form>
+}
+
+@section Scripts{
+    <script>
+        // jQuery or $
+        // $(css_selector).method().method2().method3()
+        // $(css_selector).event(fn)
+        $('select#ddlMachine').change(fn1);
+
+        function fn1() {
+            let machineId = $(this).val();
+            let url = '/machines/index/' + machineId;
+            window.location = url;
+        }
+    </script>
 }

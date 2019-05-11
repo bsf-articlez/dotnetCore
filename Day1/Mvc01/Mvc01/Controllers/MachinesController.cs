@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Mvc01.Models;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,6 @@ namespace Mvc01.Controllers
             new Machine(1),
             new Machine(2),
             new Machine(3),
-            new Machine(0),
         };
         // /machines/index/3
         public IActionResult Index(int? id)
@@ -24,6 +24,7 @@ namespace Mvc01.Controllers
 
             if (machine == null) return NotFound();
 
+            ViewBag.MachineList = new SelectList(machines, nameof(machine.Id), nameof(machine.Id), id);
             return View(machine);
         }
 
