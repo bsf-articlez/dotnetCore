@@ -3,17 +3,24 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Mvc01.Models;
 using System.Collections.Generic;
 using System.Linq;
+using static Mvc01.Models.Constants;
 
 namespace Mvc01.Controllers
 {
     public class MachinesController : Controller
     {
         //private static Machine machine = new Machine();
-        private static List<Machine> machines = new List<Machine>()
+        private static List<Machine> machines = new List<Machine>
         {
-            new Machine(1),
-            new Machine(2),
-            new Machine(3),
+            new Machine(1) {
+                CoinNotAccepts = new List<decimal>{ Coins.One }
+            },
+            new Machine(2){
+                CoinNotAccepts = new List<decimal>{ Coins.Five }
+            },
+            new Machine(3){
+                CoinNotAccepts = new List<decimal>{ Coins.Ten }
+            },
         };
         // /machines/index/3
         public IActionResult Index(int? id)

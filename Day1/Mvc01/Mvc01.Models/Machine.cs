@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Mvc01.Models
 {
@@ -18,6 +19,7 @@ namespace Mvc01.Models
             Id = id;
         }
         public int Id { get; set; }
+        public List<decimal> CoinNotAccepts { get; set; }
 
         public decimal TotalAmount => _totalAmount;
         public bool IsOn => _isOn;
@@ -63,6 +65,7 @@ namespace Mvc01.Models
         public void AcceptsCoin(decimal amount)
         {
             if (!_isOn) return;
+            if (CoinNotAccepts.Contains(amount)) return;
 
             _totalAmount += amount;
         }
