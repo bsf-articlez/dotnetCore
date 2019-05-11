@@ -17,13 +17,13 @@ namespace Mvc01.Controllers
             {
                 machine.AcceptsCoin(amount);
             }
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         }
 
         public IActionResult CancelCoin()
         {
             machine.ResetAmount();
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         }
 
         public IActionResult PowerMachine(bool isPowerOn)
@@ -40,7 +40,7 @@ namespace Mvc01.Controllers
                     machine.PowerOn();
                 }
             }
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         }
 
         public IActionResult TakeMoney(bool isOpened)
@@ -56,7 +56,19 @@ namespace Mvc01.Controllers
                     machine.Open();
                 }
             }
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult CancelBuying()
+        {
+            machine.CancelBuying();
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult TogglePower()
+        {
+            machine.TogglePower();
+            return RedirectToAction(nameof(Index));
         }
     }
 }
