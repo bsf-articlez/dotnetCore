@@ -18,6 +18,12 @@ namespace Mvc01.Models
         {
             Id = id;
         }
+
+        public Machine(int id, List<decimal> coinsNotAccept)
+        {
+            Id = id;
+            CoinNotAccepts = coinsNotAccept;
+        }
         public int Id { get; set; }
         public List<decimal> CoinNotAccepts { get; set; }
 

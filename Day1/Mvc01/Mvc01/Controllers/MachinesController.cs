@@ -15,12 +15,8 @@ namespace Mvc01.Controllers
             new Machine(1) {
                 CoinNotAccepts = new List<decimal>{ Coins.One }
             },
-            new Machine(2){
-                CoinNotAccepts = new List<decimal>{ Coins.Five }
-            },
-            new Machine(3){
-                CoinNotAccepts = new List<decimal>{ Coins.Ten }
-            },
+            new Machine(2, new List<decimal>{ Coins.Five }),
+            new Machine(3, new List<decimal>{ Coins.Ten }),
         };
         // /machines/index/3
         public IActionResult Index(int? id)
