@@ -8,7 +8,17 @@ namespace Mvc01.Models
         private decimal _totalAmount = 0;
         private bool _isOn = false;
         private bool _isLidOpen = false;
-        
+
+        //public Machine() : this(0)
+        //{
+
+        //}
+        public Machine(int id)
+        {
+            Id = id;
+        }
+        public int Id { get; set; }
+
         public decimal TotalAmount => _totalAmount;
         public bool IsOn => _isOn;
         public bool IsLidOpen => _isLidOpen;
