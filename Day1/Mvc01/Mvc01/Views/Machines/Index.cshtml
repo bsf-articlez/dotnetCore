@@ -4,7 +4,7 @@
 }
 
 @*<h1>Vending Machine @Model.Id</h1>*@
-<h1>Vending Machine <select id="ddlMachine" asp-items="@ViewBag.MachineList"></select></h1>
+<h1>Vending Machine <select id="ddlMachine" asp-items="@ViewBag.MachineList" data-target="#exampleModal"></select></h1>
 
 @*<select id="ddlMachine" asp-items="@ViewBag.MachineList"></select>*@
 
@@ -40,9 +40,17 @@
 </div>
 
 <div class="mt-3">
-    <form asp-action="TogglePower" asp-controller="Machines" asp-route-id="@Model.Id" method="put">
-        <button class="btn btn-danger" name="isPowerOn">Power</button>
-    </form>
+    @if (Model.IsOn)
+    {
+        <form asp-action="TogglePower" asp-controller="Machines" asp-route-id="@Model.Id" method="put">
+            <button class="btn btn-danger" name="isPowerOn" data-target="#exampleModal">Power</button>
+        </form>
+    }
+    else
+    {
+        <button class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">Power</button>
+    }
+
 </div>
 @if (Model.IsOn)
 {
@@ -105,17 +113,59 @@ else
     </form>
 }
 
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Setting Coins</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="container text-center">
+                        <thead>
+                            <tr>
+                                <td><b>Coin Number</b></td>
+                                <td><b>Is Accept</b></td>
+                            </tr>
+                        </thead>
+                        @foreach (var item in Model.Coins)
+                        {
+                            <tr>
+                                <td>@item.Number</td>
+                                <td><input type="checkbox" name="isAccept" checked="@item.IsAccept" /></td>
+                            </tr>
+                        }
+                    </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="btnConfirmTogglePower" type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts{
     <script>
-        // jQuery or $
-        // $(css_selector).method().method2().method3()
-        // $(css_selector).event(fn)
-        $('select#ddlMachine').change(fn1);
+    // jQuery or $
+    // $(css_selector).method().method2().method3()
+    // $(css_selector).event(fn)
+    $('select#ddlMachine').change(fn1);
 
-        function fn1() {
-            let machineId = $(this).val();
-            let url = '/machines/index/' + machineId;
-            window.location = url;
-        }
+    function fn1() {
+        let machineId = $(this).val();
+        let url = '/machines/index/' + machineId;
+        window.location = url;
+    }
+
+    $('button#btnConfirmTogglePower').click(fn2);
+
+    function fn2() {
+        let url = '/machines/togglepower/' + @Model.Id;
+        window.location = url;
+    }
     </script>
 }
