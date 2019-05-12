@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Mvc01.Models
 {
@@ -19,13 +20,8 @@ namespace Mvc01.Models
             Id = id;
         }
 
-        public Machine(int id, List<decimal> coinsNotAccept)
-        {
-            Id = id;
-            CoinNotAccepts = coinsNotAccept;
-        }
         public int Id { get; set; }
-        public List<decimal> CoinNotAccepts { get; set; }
+        public List<Coin> Coins { get; set; }
 
         public decimal TotalAmount => _totalAmount;
         public bool IsOn => _isOn;
@@ -68,10 +64,16 @@ namespace Mvc01.Models
             else OpenLid();
         }
 
-        public void AcceptsCoin(decimal amount)
+        public void AcceptsCoin(decimal amount, ref string messageCoinNotAccept)
         {
             if (!_isOn) return;
-            if (CoinNotAccepts.Contains(amount)) return;
+
+            var CoinNotAccepts = Coins.Where(x => !x.IsAccept).Select(x => x.Number).ToList();
+            if (CoinNotAccepts.Contains(amount))
+            {
+                messageCoinNotAccept = amount.ToString() + " Bath coin cannot be used.";
+                return;
+            }
 
             _totalAmount += amount;
         }

@@ -62,12 +62,32 @@ else
 
         Please add a coin
         <form asp-action="InsertCoin" asp-controller="Machines" asp-route-id="@Model.Id" asp-route-color="lavender" method="post">
-            <button class="btn btn-outline-secondary" name="amount" value="1">1</button>
-            <button class="btn btn-outline-secondary" name="amount" value="5">5</button>
-            <button class="btn btn-outline-secondary" name="amount" value="10">10</button>
+            @foreach (Coin item in ViewBag.Coins)
+            {
+                if (item.IsAccept)
+                {
+                    <button class="btn btn-outline-secondary" name="amount" value="@item.Number.">@item.Number</button>
+                }
+                else
+                {
+                    <button class="btn btn-danger" name="amount" value="@item.Number.">@item.Number</button>
+                }
+            }
+            @*<button class="btn btn-outline-secondary" name="amount" value="1">1</button>
+                <button class="btn btn-outline-secondary" name="amount" value="5">5</button>
+                <button class="btn btn-outline-secondary" name="amount" value="10">10</button>*@
         </form>
     </div>
 </div>
+
+@if (ViewBag.messageCoinNotAccept.ToString() != "")
+{
+    <div class="alert alert-danger mb-2" role="alert">
+        <h4 class="alert-heading">Sorry!</h4>
+        <p>@ViewBag.MessageCoinNotAccept</p>
+    </div>
+}
+
 
 @if (Model.TotalAmount < 200)
 {

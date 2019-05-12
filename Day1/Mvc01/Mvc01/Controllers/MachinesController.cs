@@ -12,14 +12,70 @@ namespace Mvc01.Controllers
         //private static Machine machine = new Machine();
         private static List<Machine> machines = new List<Machine>
         {
-            new Machine(1) {
-                CoinNotAccepts = new List<decimal>{ Coins.One }
+            new Machine(1){
+                Coins = new List<Coin>
+                {
+                    new Coin
+                    {
+                        Number = Coins.One,
+                        IsAccept = false
+                    },
+                    new Coin
+                    {
+                        Number = Coins.Five,
+                        IsAccept = true
+                    },
+                    new Coin
+                    {
+                        Number = Coins.Ten,
+                        IsAccept = true
+                    }
+                }
             },
-            new Machine(2, new List<decimal>{ Coins.Five }),
-            new Machine(3, new List<decimal>{ Coins.Ten }),
+            new Machine(2){
+                Coins = new List<Coin>
+                {
+                    new Coin
+                    {
+                        Number = Coins.One,
+                        IsAccept = true
+                    },
+                    new Coin
+                    {
+                        Number = Coins.Five,
+                        IsAccept = false
+                    },
+                    new Coin
+                    {
+                        Number = Coins.Ten,
+                        IsAccept = true
+                    }
+                }
+            },
+            new Machine(3){
+                Coins = new List<Coin>
+                {
+                    new Coin
+                    {
+                        Number = Coins.One,
+                        IsAccept = true
+                    },
+                    new Coin
+                    {
+                        Number = Coins.Five,
+                        IsAccept = true
+                    },
+                    new Coin
+                    {
+                        Number = Coins.Ten,
+                        IsAccept = false
+                    }
+                }
+            },
         };
+
         // /machines/index/3
-        public IActionResult Index(int? id)
+        public IActionResult Index(int? id, string messageCoinNotAccept = "")
         {
             if (id == null) id = 1; //return Content("NULL");
 
@@ -28,14 +84,21 @@ namespace Mvc01.Controllers
             if (machine == null) return NotFound();
 
             ViewBag.MachineList = new SelectList(machines, nameof(machine.Id), nameof(machine.Id), id);
+            ViewBag.Coins = machine.Coins;
+            ViewBag.MessageCoinNotAccept = messageCoinNotAccept;
             return View(machine);
         }
 
         public IActionResult InsertCoin(int id, decimal amount, string color)
         {
             var machine = machines.SingleOrDefault(x => x.Id == id);
-            machine.AcceptsCoin(amount);
-            return RedirectToAction(nameof(Index), new { id });
+            string messageCoinNotAccept = "";
+            machine.AcceptsCoin(amount, ref messageCoinNotAccept);
+            return RedirectToAction(nameof(Index), new
+            {
+                id,
+                messageCoinNotAccept
+            });
         }
 
         public IActionResult CancelBuying(int id)
