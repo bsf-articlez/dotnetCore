@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Mvc01.Models;
 using System.Collections.Generic;
 using System.Linq;
-using static Mvc01.Models.Constants;
 
 namespace Mvc01.Controllers
 {
@@ -12,66 +11,9 @@ namespace Mvc01.Controllers
         //private static Machine machine = new Machine();
         private static List<Machine> machines = new List<Machine>
         {
-            new Machine(1){
-                Coins = new List<Coin>
-                {
-                    new Coin
-                    {
-                        Number = Coins.One,
-                        IsAccept = false
-                    },
-                    new Coin
-                    {
-                        Number = Coins.Five,
-                        IsAccept = true
-                    },
-                    new Coin
-                    {
-                        Number = Coins.Ten,
-                        IsAccept = true
-                    }
-                }
-            },
-            new Machine(2){
-                Coins = new List<Coin>
-                {
-                    new Coin
-                    {
-                        Number = Coins.One,
-                        IsAccept = true
-                    },
-                    new Coin
-                    {
-                        Number = Coins.Five,
-                        IsAccept = false
-                    },
-                    new Coin
-                    {
-                        Number = Coins.Ten,
-                        IsAccept = true
-                    }
-                }
-            },
-            new Machine(3){
-                Coins = new List<Coin>
-                {
-                    new Coin
-                    {
-                        Number = Coins.One,
-                        IsAccept = true
-                    },
-                    new Coin
-                    {
-                        Number = Coins.Five,
-                        IsAccept = true
-                    },
-                    new Coin
-                    {
-                        Number = Coins.Ten,
-                        IsAccept = false
-                    }
-                }
-            },
+            new Machine(1),
+            new Machine(2),
+            new Machine(3),
         };
 
         // /machines/index/3
@@ -84,8 +26,7 @@ namespace Mvc01.Controllers
             if (machine == null) return NotFound();
 
             ViewBag.MachineList = new SelectList(machines, nameof(machine.Id), nameof(machine.Id), id);
-            ViewBag.Coins = machine.Coins;
-            ViewBag.MessageCoinNotAccept = messageCoinNotAccept;
+
             return View(machine);
         }
 

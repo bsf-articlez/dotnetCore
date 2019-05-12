@@ -21,7 +21,6 @@ namespace Mvc01.Models
         }
 
         public int Id { get; set; }
-        public List<Coin> Coins { get; set; }
 
         public decimal TotalAmount => _totalAmount;
         public bool IsOn => _isOn;
@@ -67,13 +66,6 @@ namespace Mvc01.Models
         public void AcceptsCoin(decimal amount, ref string messageCoinNotAccept)
         {
             if (!_isOn) return;
-
-            var CoinNotAccepts = Coins.Where(x => !x.IsAccept).Select(x => x.Number).ToList();
-            if (CoinNotAccepts.Contains(amount))
-            {
-                messageCoinNotAccept = amount.ToString() + " Bath coin cannot be used.";
-                return;
-            }
 
             _totalAmount += amount;
         }
