@@ -82,5 +82,19 @@ namespace Mvc01.Models
         {
             _totalAmount = 0m;
         }
+
+        public void SettingCoinsAccept(decimal[] isAccept)
+        {
+            if (IsOn) return;
+
+            List<Coin> coinsNew = new List<Coin>();
+            foreach (var item in Coins)
+            {
+                if (isAccept.Contains(item.Number)) coinsNew.Add(new Coin { Number = item.Number, IsAccept = true });
+                else coinsNew.Add(new Coin { Number = item.Number, IsAccept = false });
+            }
+
+            Coins = coinsNew;
+        }
     }
 }

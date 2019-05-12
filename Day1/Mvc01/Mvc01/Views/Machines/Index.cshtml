@@ -70,7 +70,7 @@ else
 
         Please add a coin
         <form asp-action="InsertCoin" asp-controller="Machines" asp-route-id="@Model.Id" asp-route-color="lavender" method="post">
-            @foreach (Coin item in ViewBag.Coins)
+            @foreach (Coin item in Model.Coins)
             {
                 if (item.IsAccept)
                 {
@@ -114,17 +114,18 @@ else
 }
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Setting Coins</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <table class="container text-center">
+<form asp-action="togglepower" asp-controller="machines" asp-route-id="@Model.Id" method="post">
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Setting Coins</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="container text-center">
                         <thead>
                             <tr>
                                 <td><b>Coin Number</b></td>
@@ -135,18 +136,19 @@ else
                         {
                             <tr>
                                 <td>@item.Number</td>
-                                <td><input type="checkbox" name="isAccept" checked="@item.IsAccept" /></td>
+                                <td><input type="checkbox" name="isAccept" value="@item.Number" checked="@item.IsAccept" /></td>
                             </tr>
                         }
                     </table>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button id="btnConfirmTogglePower" type="button" class="btn btn-primary">Save changes</button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button id="btnConfirmTogglePower" type="submit" class="btn btn-success">Power On</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+</form>
 
 @section Scripts{
     <script>
@@ -158,13 +160,6 @@ else
     function fn1() {
         let machineId = $(this).val();
         let url = '/machines/index/' + machineId;
-        window.location = url;
-    }
-
-    $('button#btnConfirmTogglePower').click(fn2);
-
-    function fn2() {
-        let url = '/machines/togglepower/' + @Model.Id;
         window.location = url;
     }
     </script>

@@ -108,9 +108,10 @@ namespace Mvc01.Controllers
             return RedirectToAction(nameof(Index), new { id });
         }
 
-        public IActionResult TogglePower(int id)
+        public IActionResult TogglePower(int id, decimal[] isAccept)
         {
             var machine = machines.SingleOrDefault(x => x.Id == id);
+            machine.SettingCoinsAccept(isAccept);
             machine.TogglePower();
             return RedirectToAction(nameof(Index), new { id });
         }
