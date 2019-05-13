@@ -77,10 +77,10 @@ namespace Mvc01.Controllers
             return RedirectToAction(nameof(Index), new { id });
         }
 
-        public IActionResult TogglePower(int id, decimal[] isAccept)
+        public IActionResult TogglePower(int id, decimal[] coinIsAccepts)
         {
             var machine = machines.SingleOrDefault(x => x.Id == id);
-            machine.SettingCoinsAccept(isAccept);
+            machine.SettingCoinsAccept(coinIsAccepts);
             machine.TogglePower();
             return RedirectToAction(nameof(Index), new { id });
         }
