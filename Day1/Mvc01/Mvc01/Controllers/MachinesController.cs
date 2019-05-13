@@ -15,63 +15,26 @@ namespace Mvc01.Controllers
             new Machine(1){
                 Coins = new List<Coin>
                 {
-                    new Coin
-                    {
-                        Number = Coins.One,
-                        IsAccept = false
-                    },
-                    new Coin
-                    {
-                        Number = Coins.Five,
-                        IsAccept = true
-                    },
-                    new Coin
-                    {
-                        Number = Coins.Ten,
-                        IsAccept = true
-                    }
+                    Machine.SetCoin(Coins.One, false),
+                    Machine.SetCoin(Coins.Two, true),
+                    Machine.SetCoin(Coins.Five, true),
+                    Machine.SetCoin(Coins.Ten, true),
                 }
             },
-            new Machine(2){
-                Coins = new List<Coin>
+            new Machine(2, new List<Coin>
                 {
-                    new Coin
-                    {
-                        Number = Coins.One,
-                        IsAccept = true
-                    },
-                    new Coin
-                    {
-                        Number = Coins.Five,
-                        IsAccept = false
-                    },
-                    new Coin
-                    {
-                        Number = Coins.Ten,
-                        IsAccept = true
-                    }
-                }
-            },
-            new Machine(3){
-                Coins = new List<Coin>
+                    Machine.SetCoin(Coins.One, true),
+                    Machine.SetCoin(Coins.Two, false),
+                    Machine.SetCoin(Coins.Five, true),
+                    Machine.SetCoin(Coins.Ten, true),
+                }),
+            new Machine(3,new List<Coin>
                 {
-                    new Coin
-                    {
-                        Number = Coins.One,
-                        IsAccept = true
-                    },
-                    new Coin
-                    {
-                        Number = Coins.Five,
-                        IsAccept = true
-                    },
-                    new Coin
-                    {
-                        Number = Coins.Ten,
-                        IsAccept = false
-                    }
-                }
-            },
+                    Machine.SetCoin(Coins.One, true),
+                    Machine.SetCoin(Coins.Two, true),
+                    Machine.SetCoin(Coins.Five, false),
+                    Machine.SetCoin(Coins.Ten, true),
+                }),
         };
 
         // /machines/index/3

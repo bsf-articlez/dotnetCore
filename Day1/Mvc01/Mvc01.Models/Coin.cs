@@ -2,7 +2,7 @@
 {
     public class Coin
     {
-        public decimal Number { get; set; }
+        public decimal Amount { get; set; }
         public bool IsAccept { get; set; }
     }
 }

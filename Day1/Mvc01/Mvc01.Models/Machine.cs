@@ -20,6 +20,12 @@ namespace Mvc01.Models
             Id = id;
         }
 
+        public Machine(int id, List<Coin> coins)
+        {
+            Id = id;
+            Coins = coins;
+        }
+
         public int Id { get; set; }
         public List<Coin> Coins { get; set; }
 
@@ -68,7 +74,7 @@ namespace Mvc01.Models
         {
             if (!_isOn) return;
 
-            var CoinNotAccepts = Coins.Where(x => !x.IsAccept).Select(x => x.Number).ToList();
+            var CoinNotAccepts = Coins.Where(x => !x.IsAccept).Select(x => x.Amount).ToList();
             if (CoinNotAccepts.Contains(amount))
             {
                 messageCoinNotAccept = amount.ToString() + " Bath coin cannot be used.";
@@ -85,16 +91,23 @@ namespace Mvc01.Models
 
         public void SettingCoinsAccept(decimal[] isAccept)
         {
+            if (IsLidOpen) return;
             if (IsOn) return;
 
             List<Coin> coinsNew = new List<Coin>();
             foreach (var item in Coins)
             {
-                if (isAccept.Contains(item.Number)) coinsNew.Add(new Coin { Number = item.Number, IsAccept = true });
-                else coinsNew.Add(new Coin { Number = item.Number, IsAccept = false });
+                if (isAccept.Contains(item.Amount)) coinsNew.Add(new Coin { Amount = item.Amount, IsAccept = true });
+                else coinsNew.Add(new Coin { Amount = item.Amount, IsAccept = false });
             }
 
             Coins = coinsNew;
         }
+
+        public static Coin SetCoin(decimal amount, bool isAccept) => new Coin
+        {
+            Amount = amount,
+            IsAccept = isAccept
+        };
     }
 }
