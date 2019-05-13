@@ -91,8 +91,8 @@ namespace Mvc01.Models
 
         public void SettingCoinsAccept(decimal[] isAccept)
         {
-            if (IsLidOpen) return;
-            if (IsOn) return;
+            if (_isLidOpen) return;
+            if (_isOn) return;
 
             List<Coin> coinsNew = new List<Coin>();
             foreach (var item in Coins)

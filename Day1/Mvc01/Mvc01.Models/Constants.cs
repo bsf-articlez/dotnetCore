@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Mvc01.Models
+﻿namespace Mvc01.Models
 {
     public static class Constants
     {
