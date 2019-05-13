@@ -15,6 +15,8 @@ namespace Mvc01.Controllers
             new Machine(1){
                 Coins = new List<Coin>
                 {
+                    Machine.SetCoin(Coins.TwentyFiveSatang, false),
+                    Machine.SetCoin(Coins.FiftyFiveSatang, false),
                     Machine.SetCoin(Coins.One, false),
                     Machine.SetCoin(Coins.Two, true),
                     Machine.SetCoin(Coins.Five, true),
@@ -23,6 +25,8 @@ namespace Mvc01.Controllers
             },
             new Machine(2, new List<Coin>
                 {
+                    Machine.SetCoin(Coins.TwentyFiveSatang, false),
+                    Machine.SetCoin(Coins.FiftyFiveSatang, false),
                     Machine.SetCoin(Coins.One, true),
                     Machine.SetCoin(Coins.Two, false),
                     Machine.SetCoin(Coins.Five, true),
@@ -30,6 +34,8 @@ namespace Mvc01.Controllers
                 }),
             new Machine(3,new List<Coin>
                 {
+                    Machine.SetCoin(Coins.TwentyFiveSatang, false),
+                    Machine.SetCoin(Coins.FiftyFiveSatang, false),
                     Machine.SetCoin(Coins.One, true),
                     Machine.SetCoin(Coins.Two, true),
                     Machine.SetCoin(Coins.Five, false),

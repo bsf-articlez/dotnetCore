@@ -89,19 +89,22 @@ namespace Mvc01.Models
             _totalAmount = 0m;
         }
 
-        public void SettingCoinsAccept(decimal[] isAccept)
+        public void SettingCoinsAccept(decimal[] coinIsAccepts)
         {
             if (_isLidOpen) return;
             if (_isOn) return;
 
-            List<Coin> coinsNew = new List<Coin>();
             foreach (var item in Coins)
             {
-                if (isAccept.Contains(item.Amount)) coinsNew.Add(new Coin { Amount = item.Amount, IsAccept = true });
-                else coinsNew.Add(new Coin { Amount = item.Amount, IsAccept = false });
+                if (coinIsAccepts.Contains(item.Amount))
+                {
+                    item.IsAccept = true;
+                }
+                else
+                {
+                    item.IsAccept = false;
+                }
             }
-
-            Coins = coinsNew;
         }
 
         public static Coin SetCoin(decimal amount, bool isAccept) => new Coin

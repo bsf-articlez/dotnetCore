@@ -81,11 +81,11 @@ else
             {
             if (item.IsAccept)
             {
-            <button class="btn btn-outline-secondary" name="amount" value="@item.Amount.">@item.Amount</button>
+            <button class="btn btn-outline-secondary" name="amount" value="@item.Amount">@item.Amount</button>
             }
             else
             {
-            <button class="btn btn-danger" name="amount" value="@item.Amount.">@item.Amount</button>
+            <button class="btn btn-danger" name="amount" value="@item.Amount">@item.Amount</button>
             }
             }
         </form>
@@ -140,7 +140,7 @@ else
                         {
                         <tr>
                             <td>@item.Amount</td>
-                            <td><input type="checkbox" name="isAccept" value="@item.Amount.ToString().Replace(".","")" checked="@item.IsAccept" /></td>
+                            <td><input type="checkbox" name="isAccept" value="@item.Amount" checked="@item.IsAccept" /></td>
                         </tr>
                         }
                     </table>
