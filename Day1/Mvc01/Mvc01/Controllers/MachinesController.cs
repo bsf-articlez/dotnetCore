@@ -44,7 +44,7 @@ namespace Mvc01.Controllers
         };
 
         // /machines/index/3
-        public IActionResult Index(int? id, string messageCoinNotAccept = "")
+        public IActionResult Index(int? id)
         {
             if (id == null) id = 1; //return Content("NULL");
 
@@ -54,19 +54,16 @@ namespace Mvc01.Controllers
 
             ViewBag.MachineList = new SelectList(machines, nameof(machine.Id), nameof(machine.Id), id);
             ViewBag.Coins = machine.Coins;
-            ViewBag.MessageCoinNotAccept = messageCoinNotAccept;
             return View(machine);
         }
 
         public IActionResult InsertCoin(int id, decimal amount, string color)
         {
             var machine = machines.SingleOrDefault(x => x.Id == id);
-            string messageCoinNotAccept = "";
-            machine.AcceptsCoin(amount, ref messageCoinNotAccept);
+            machine.AcceptsCoin(amount);
             return RedirectToAction(nameof(Index), new
             {
-                id,
-                messageCoinNotAccept
+                id
             });
         }
 

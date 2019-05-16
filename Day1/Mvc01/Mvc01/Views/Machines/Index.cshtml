@@ -92,11 +92,11 @@ else
     </div>
 </div>
 
-@if (ViewBag.messageCoinNotAccept.ToString() != "")
+@if (Model.MessageCoinNotAccept != "")
 {
     <div class="alert alert-danger mb-2" role="alert">
         <h4 class="alert-heading">Sorry!</h4>
-        <p>@ViewBag.MessageCoinNotAccept</p>
+        <p>@Model.MessageCoinNotAccept</p>
     </div>
 }
 

@@ -18,16 +18,19 @@ namespace Mvc01.Models
         public Machine(int id)
         {
             Id = id;
+            MessageCoinNotAccept = "";
         }
 
         public Machine(int id, List<Coin> coins)
         {
             Id = id;
             Coins = coins;
+            MessageCoinNotAccept = "";
         }
 
         public int Id { get; set; }
         public List<Coin> Coins { get; set; }
+        public string MessageCoinNotAccept { get; set; }
 
         public decimal TotalAmount => _totalAmount;
         public bool IsOn => _isOn;
@@ -70,14 +73,14 @@ namespace Mvc01.Models
             else OpenLid();
         }
 
-        public void AcceptsCoin(decimal amount, ref string messageCoinNotAccept)
+        public void AcceptsCoin(decimal amount)
         {
             if (!_isOn) return;
 
             var CoinNotAccepts = Coins.Where(x => !x.IsAccept).Select(x => x.Amount).ToList();
             if (CoinNotAccepts.Contains(amount))
             {
-                messageCoinNotAccept = amount.ToString() + " Bath coin cannot be used.";
+                MessageCoinNotAccept = amount.ToString() + " Bath coin cannot be used.";
                 return;
             }
 
