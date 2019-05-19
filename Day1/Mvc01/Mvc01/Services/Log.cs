@@ -7,7 +7,7 @@ namespace Mvc01.Services
     public class Log : ILog
     {
         private const string LogFileName = "log.txt";
-        public async Task Send(string s)
+        public async Task SendAsync(string s)
         {
             var message = $"{DateTimeOffset.Now:s} {s}";
             int count = 3;

@@ -19,17 +19,17 @@ namespace Mvc01.Controllers
             new Machine(3),
         };
 
-        private readonly ILog log;
+        private readonly IEnumerable<ILog> logs;
 
-        public MachinesController(ILog log)
+        public MachinesController(IEnumerable<ILog> log)
         {
-            this.log = log;
+            this.logs = log;
         }
 
         // /machines/index/3
         public IActionResult Index(int? id)
         {
-            if (id == null) id = 1; //return Content("NULL");
+            if (id == null) id = 1;
 
             var machine = machines.SingleOrDefault(x => x.Id == id);
 
@@ -48,8 +48,10 @@ namespace Mvc01.Controllers
             {
                 machine.AcceptsCoin(amount);
 
-                //var log = new Log();
-                await log.Send($"{amount} coin has accepted.");
+                foreach (var log in logs)
+                {
+                    await log.SendAsync($"{amount} coin has accepted.");
+                }
             }
             catch (Exception ex)
             {

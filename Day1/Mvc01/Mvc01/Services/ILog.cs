@@ -4,6 +4,6 @@ namespace Mvc01.Services
 {
     public interface ILog
     {
-        Task Send(string s);
+        Task SendAsync(string s);
     }
 }
