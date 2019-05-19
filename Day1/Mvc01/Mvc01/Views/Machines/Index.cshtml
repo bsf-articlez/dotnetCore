@@ -8,6 +8,13 @@
 
 @*<select id="ddlMachine" asp-items="@ViewBag.MachineList"></select>*@
 
+@if (@TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
+
 <div class="card">
     <div class="card-body">
         <div class="custom-switch">
@@ -24,34 +31,6 @@
         </div>
     </div>
 </div>
-<div class="float-right mt-3">
-    <form asp-action="ToggleLid" asp-controller="Machines" asp-route-id="@Model.Id" method="put">
-        <button class="btn btn-outline-dark" name="isOpened">Open/Close</button>
-    </form>
-
-    @if (Model.IsLidOpen)
-    {
-        <h4 class="text-danger">Opened</h4>
-    }
-    else
-    {
-        <h4 class="text-primary">Closed</h4>
-    }
-</div>
-
-<div class="mt-3">
-    <form asp-action="TogglePower" asp-controller="Machines" asp-route-id="@Model.Id" method="put">
-        <button class="btn btn-danger" name="isPowerOn">Power</button>
-    </form>
-</div>
-@if (Model.IsOn)
-{
-    <h4 class="text-success">ON</h4>
-}
-else
-{
-    <h4 class="text-danger">OFF</h4>
-}
 
 <div class="card border-dark shadow my-4">
     <div class="card-body">

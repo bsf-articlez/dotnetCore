@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Mvc01.Models;
+using Mvc01.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Mvc01.Controllers
 {
@@ -16,6 +18,13 @@ namespace Mvc01.Controllers
             new Machine(2, new[] { 1m, 10m }),
             new Machine(3),
         };
+
+        private readonly ILog log;
+
+        public MachinesController(ILog log)
+        {
+            this.log = log;
+        }
 
         // /machines/index/3
         public IActionResult Index(int? id)
@@ -31,13 +40,16 @@ namespace Mvc01.Controllers
             return View(machine);
         }
 
-        public IActionResult InsertCoin(int id, decimal amount, string color)
+        public async Task<IActionResult> InsertCoin(int id, decimal amount, string color)
         {
             var machine = machines.SingleOrDefault(x => x.Id == id);
 
             try
             {
                 machine.AcceptsCoin(amount);
+
+                //var log = new Log();
+                await log.Send($"{amount} coin has accepted.");
             }
             catch (Exception ex)
             {
