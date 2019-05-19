@@ -4,10 +4,10 @@
     {
         public static class Coins
         {
-            public const decimal TwentyFiveSatang = 0.25m;
-            public const decimal FiftyFiveSatang = 0.5m;
+            //public const decimal TwentyFiveSatang = 0.25m;
+            //public const decimal FiftyFiveSatang = 0.5m;
             public const decimal One = 1m;
-            public const decimal Two = 2m;
+            //public const decimal Two = 2m;
             public const decimal Five = 5m;
             public const decimal Ten = 10m;
         }

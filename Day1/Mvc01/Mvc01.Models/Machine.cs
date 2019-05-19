@@ -36,10 +36,17 @@ namespace Mvc01.Models
         public bool IsOn => _isOn;
         public bool IsLidOpen => _isLidOpen;
 
-        public void TogglePower()
+        public void TogglePower(decimal[] coinIsAccepts)
         {
-            if (_isOn) TurnOff();
-            else TurnOn();
+            if (_isOn)
+            {
+                TurnOff();
+            }
+            else
+            {
+                SettingCoinsAccept(coinIsAccepts);
+                TurnOn();
+            }
         }
         public void OpenLid()
         {
@@ -77,10 +84,10 @@ namespace Mvc01.Models
         {
             if (!_isOn) return;
 
-            var CoinNotAccepts = Coins.Where(x => !x.IsAccept).Select(x => x.Amount).ToList();
+            var CoinNotAccepts = Coins.Where(x => !x.IsAccept).Select(x => x.Amount);
             if (CoinNotAccepts.Contains(amount))
             {
-                MessageCoinNotAccept = amount.ToString() + " Bath coin cannot be used.";
+                MessageCoinNotAccept = amount + " Bath coin cannot be used.";
                 return;
             }
 
@@ -92,28 +99,24 @@ namespace Mvc01.Models
             _totalAmount = 0m;
         }
 
-        public void SettingCoinsAccept(decimal[] coinIsAccepts)
+        private void SettingCoinsAccept(decimal[] coinIsAccepts)
         {
             if (_isLidOpen) return;
             if (_isOn) return;
 
             foreach (var item in Coins)
             {
-                if (coinIsAccepts.Contains(item.Amount))
-                {
-                    item.IsAccept = true;
-                }
-                else
-                {
-                    item.IsAccept = false;
-                }
+                item.IsAccept = coinIsAccepts.Contains(item.Amount);
             }
         }
 
-        public static Coin SetCoin(decimal amount, bool isAccept) => new Coin
+        public static Coin CreateCoin(decimal amount, bool isAccept)
         {
-            Amount = amount,
-            IsAccept = isAccept
-        };
+            return new Coin
+            {
+                Amount = amount,
+                IsAccept = isAccept
+            };
+        }
     }
 }

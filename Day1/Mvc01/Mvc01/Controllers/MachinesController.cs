@@ -15,31 +15,22 @@ namespace Mvc01.Controllers
             new Machine(1){
                 Coins = new List<Coin>
                 {
-                    Machine.SetCoin(Coins.TwentyFiveSatang, false),
-                    Machine.SetCoin(Coins.FiftyFiveSatang, false),
-                    Machine.SetCoin(Coins.One, false),
-                    Machine.SetCoin(Coins.Two, true),
-                    Machine.SetCoin(Coins.Five, true),
-                    Machine.SetCoin(Coins.Ten, true),
+                    Machine.CreateCoin(Coins.One, false),
+                    Machine.CreateCoin(Coins.Five, true),
+                    Machine.CreateCoin(Coins.Ten, true),
                 }
             },
             new Machine(2, new List<Coin>
                 {
-                    Machine.SetCoin(Coins.TwentyFiveSatang, false),
-                    Machine.SetCoin(Coins.FiftyFiveSatang, false),
-                    Machine.SetCoin(Coins.One, true),
-                    Machine.SetCoin(Coins.Two, false),
-                    Machine.SetCoin(Coins.Five, true),
-                    Machine.SetCoin(Coins.Ten, true),
+                    Machine.CreateCoin(Coins.One, true),
+                    Machine.CreateCoin(Coins.Five, true),
+                    Machine.CreateCoin(Coins.Ten, true),
                 }),
             new Machine(3,new List<Coin>
                 {
-                    Machine.SetCoin(Coins.TwentyFiveSatang, false),
-                    Machine.SetCoin(Coins.FiftyFiveSatang, false),
-                    Machine.SetCoin(Coins.One, true),
-                    Machine.SetCoin(Coins.Two, true),
-                    Machine.SetCoin(Coins.Five, false),
-                    Machine.SetCoin(Coins.Ten, true),
+                    Machine.CreateCoin(Coins.One, true),
+                    Machine.CreateCoin(Coins.Five, false),
+                    Machine.CreateCoin(Coins.Ten, true),
                 }),
         };
 
@@ -77,8 +68,7 @@ namespace Mvc01.Controllers
         public IActionResult TogglePower(int id, decimal[] coinIsAccepts)
         {
             var machine = machines.SingleOrDefault(x => x.Id == id);
-            machine.SettingCoinsAccept(coinIsAccepts);
-            machine.TogglePower();
+            machine.TogglePower(coinIsAccepts);
             return RedirectToAction(nameof(Index), new { id });
         }
 
