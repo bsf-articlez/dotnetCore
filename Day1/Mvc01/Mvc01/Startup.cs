@@ -32,11 +32,14 @@ namespace Mvc01
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddSingleton<ILog, Log>();
-            services.AddSingleton<ILog, LineNotifyLog>();
+            services.AddSingleton<ILog, LineNotifyLog>(s =>
+            {
+                var config = s.GetRequiredService<IConfiguration>();
+                return new LineNotifyLog("Hello", config);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

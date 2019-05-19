@@ -12,7 +12,7 @@ namespace Mvc01.Services
         private readonly IConfiguration config;
         private LineNotifier line;
 
-        public LineNotifyLog(IConfiguration config)
+        public LineNotifyLog(string s, IConfiguration config)
         {
             this.config = config;
 
