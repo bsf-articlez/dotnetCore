@@ -10,14 +10,17 @@ namespace Mvc01.Models
         private decimal _totalAmount = 0;
         private bool _isOn = false;
         private bool _isLidOpen = false;
+        private decimal[] _acceptableCoins;
 
         //public Machine() : this(0)
         //{
 
         //}
-        public Machine(int id)
+        public Machine(int id, decimal[] acceptableCoins = null)
         {
             Id = id;
+            _acceptableCoins = acceptableCoins ?? new[] { 1m, 5m, 10m }; // type inference. // อนุมาณ
+            // left is null, return right.
         }
 
         public int Id { get; set; }
@@ -25,6 +28,7 @@ namespace Mvc01.Models
         public decimal TotalAmount => _totalAmount;
         public bool IsOn => _isOn;
         public bool IsLidOpen => _isLidOpen;
+        public decimal[] AcceptableCoins => _acceptableCoins;
 
         public void TogglePower()
         {
@@ -63,9 +67,11 @@ namespace Mvc01.Models
             else OpenLid();
         }
 
-        public void AcceptsCoin(decimal amount, ref string messageCoinNotAccept)
+        public void AcceptsCoin(decimal amount)
         {
             if (!_isOn) return;
+            if (!_acceptableCoins.Contains(amount))
+                throw new ArgumentOutOfRangeException(nameof(amount), $"ตู้นี้ไม่รับเหรียญ {amount} บาท ✨");
 
             _totalAmount += amount;
         }

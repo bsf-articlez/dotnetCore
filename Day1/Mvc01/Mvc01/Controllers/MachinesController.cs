@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Mvc01.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,13 +12,13 @@ namespace Mvc01.Controllers
         //private static Machine machine = new Machine();
         private static List<Machine> machines = new List<Machine>
         {
-            new Machine(1),
-            new Machine(2),
+            new Machine(1, new[] { 5m, 10m }),
+            new Machine(2, new[] { 1m, 10m }),
             new Machine(3),
         };
 
         // /machines/index/3
-        public IActionResult Index(int? id, string messageCoinNotAccept = "")
+        public IActionResult Index(int? id)
         {
             if (id == null) id = 1; //return Content("NULL");
 
@@ -33,13 +34,16 @@ namespace Mvc01.Controllers
         public IActionResult InsertCoin(int id, decimal amount, string color)
         {
             var machine = machines.SingleOrDefault(x => x.Id == id);
-            string messageCoinNotAccept = "";
-            machine.AcceptsCoin(amount, ref messageCoinNotAccept);
-            return RedirectToAction(nameof(Index), new
+
+            try
             {
-                id,
-                messageCoinNotAccept
-            });
+                machine.AcceptsCoin(amount);
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = ex.Message;
+            }
+            return RedirectToAction(nameof(Index), new { id });
         }
 
         public IActionResult CancelBuying(int id)
