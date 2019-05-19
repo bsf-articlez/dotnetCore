@@ -7,8 +7,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Mvc01.Data;
 using Mvc01.Services;
 
 namespace Mvc01
@@ -39,6 +41,11 @@ namespace Mvc01
             {
                 var config = s.GetRequiredService<IConfiguration>();
                 return new LineNotifyLog("Hello", config);
+            });
+
+            services.AddDbContext<AppDb>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString(nameof(AppDb)));
             });
         }
 
