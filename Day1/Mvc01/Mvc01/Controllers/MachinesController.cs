@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.DependencyInjection;
 using Mvc01.Models;
 using Mvc01.Services;
 using System;
@@ -21,9 +22,9 @@ namespace Mvc01.Controllers
 
         private readonly IEnumerable<ILog> logs;
 
-        public MachinesController(IEnumerable<ILog> log)
+        public MachinesController(IEnumerable<ILog> logs)
         {
-            this.logs = log;
+            this.logs = logs;
         }
 
         // /machines/index/3
@@ -50,7 +51,10 @@ namespace Mvc01.Controllers
 
                 foreach (var log in logs)
                 {
-                    await log.SendAsync($"{amount} coin has accepted.");
+                    if (log is Log)
+                    {
+                        await log.SendAsync($"{amount} coin has accepted.");
+                    }
                 }
             }
             catch (Exception ex)

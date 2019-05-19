@@ -69,7 +69,7 @@ namespace Mvc01.Models
 
         public void AcceptsCoin(decimal amount)
         {
-            if (!_isOn) return;
+            if (!_isOn) throw new InvalidOperationException("Please turn on machine");
             if (!_acceptableCoins.Contains(amount))
                 throw new ArgumentOutOfRangeException(nameof(amount), $"ตู้นี้ไม่รับเหรียญ {amount} บาท ✨");
 
