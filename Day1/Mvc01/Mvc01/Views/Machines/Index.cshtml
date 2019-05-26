@@ -32,6 +32,17 @@
     </div>
 </div>
 
+<div class="mt-2">
+    @foreach (var slot in Model.Slots)
+    {
+        <button class="btn btn-outline-success">
+            <div>@slot.Product.Name</div>
+            <div>@slot.Product.Price</div>
+            <div>@slot.Quantity</div>
+        </button>
+    }
+</div>
+
 <div class="card border-dark shadow my-4">
     <div class="card-body">
         <div class="float-right text-center p-2 px-3 bg-dark text-light rounded">

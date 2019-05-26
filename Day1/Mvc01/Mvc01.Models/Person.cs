@@ -12,7 +12,7 @@ namespace Mvc01.Models
         public Guid Id { get; set; }
         [Required]
         public string Name { get; set; }
-        public Address Home { get; set; }
-        public Address Office { get; set; }
+        virtual public Address Home { get; set; }
+        virtual public Address Office { get; set; }
     }
 }
