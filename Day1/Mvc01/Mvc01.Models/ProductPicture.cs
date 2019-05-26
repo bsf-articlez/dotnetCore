@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Mvc01.Models
 {
-    //[Table("ProductPictures")]
+    [Table("ProductPictures")]
     public class ProductPicture
     {
         public int Id { get; set; }

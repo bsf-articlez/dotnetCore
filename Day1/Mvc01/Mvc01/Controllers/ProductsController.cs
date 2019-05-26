@@ -1,17 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Mvc01.Data;
 using Mvc01.Models;
+using System;
+using System.IO;
+using System.Linq;
 
 namespace Mvc01.Controllers
 {
     public class ProductsController : Controller
     {
         private readonly AppDb db;
-        public ProductsController(AppDb db) => this.db = db;
+        private readonly IHostingEnvironment env;
+
+        public ProductsController(AppDb db, IHostingEnvironment env)
+        {
+            this.db = db;
+            this.env = env;
+        }
+
         public IActionResult Index()
         {
             var items = db.Products.ToList();
@@ -23,41 +31,43 @@ namespace Mvc01.Controllers
             return View();
         }
 
-        //[HttpPost]
-        //public IActionResult Create(string name, decimal price)
-        //{
-        //    Product product = new Product
-        //    {
-        //        Name = name,
-        //        Price = price,
-        //        CreateDate = DateTime.UtcNow.AddHours(7)
-        //    };
-
-        //    db.Add(product); // db.Products.Add(product); // in memory
-        //    int rowAffected = db.SaveChanges(); // create SQL, execute at server-side.
-        //    TempData["NewId"] = product.Id;
-
-        //    return RedirectToAction(nameof(Index));
-        //}
-
         [HttpPost]
-        public IActionResult Create(Product product) // create object --> assign properties from request data --> validation in ModelState
+        public IActionResult Create(Product item, IFormFile[] pics) // create object --> assign properties from request data --> validation in ModelState
         {
-            if (db.Products.Any(x => x.Name == product.Name))
+            if (db.Products.Any(x => x.Name == item.Name))
                 ModelState.AddModelError(nameof(Product.Name), "Duplicate name.");
 
             if (ModelState.IsValid)
             {
-                product.CreateDate = DateTime.UtcNow.AddHours(7);
+                foreach (var pic in pics)
+                {
+                    string fileName = Path.GetRandomFileName() + Path.GetExtension(pic.FileName);
+                    string filePath = Path.Combine(env.ContentRootPath, "Files", fileName);
 
-                db.Add(product); // db.Products.Add(product); // in memory
+                    using (FileStream fs = new FileStream(filePath, FileMode.CreateNew))
+                    {
+                        pic.CopyTo(fs);
+                    }
+
+                    ProductPicture productPicture = new ProductPicture
+                    {
+                        Description = "",
+                        Url = fileName,
+                    };
+
+                    item.Pictures.Add(productPicture);
+                }
+
+                item.CreateDate = DateTime.UtcNow.AddHours(7);
+
+                db.Add(item); // db.Products.Add(product); // in memory
                 int rowAffected = db.SaveChanges(); // create SQL, execute at server-side.
-                TempData["NewId"] = product.Id;
+                TempData["NewId"] = item.Id;
 
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(product);
+            return View(item);
         }
     }
 }
