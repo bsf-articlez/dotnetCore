@@ -16,6 +16,7 @@ namespace Mvc01.Models
         [StringLength(100)]
         public string Name { get; set; }
 
+        [Required]
         [Range(0, 999999)] // Range data
         [Column("Price", TypeName = "decimal(18, 4)")] // Fix data column
         public decimal Price { get; set; }
