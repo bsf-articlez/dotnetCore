@@ -119,5 +119,19 @@ namespace Mvc01.Controllers
         {
             return View(db.Products.Include(x => x.Pictures).SingleOrDefault(x => x.Id == id));
         }
+
+        public IActionResult Delete(int id)
+        {
+            return View(db.Products.Include(x => x.Pictures).SingleOrDefault(x => x.Id == id));
+        }
+
+        //[HttpPost]
+        //public IActionResult Delete(int id)
+        //{
+        //    Product product = db.Products.Find(id);
+        //    db.Remove(product);
+        //    db.SaveChanges();
+        //    return RedirectToAction(nameof(Index));
+        //}
     }
 }
