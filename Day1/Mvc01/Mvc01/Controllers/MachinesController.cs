@@ -15,8 +15,8 @@ namespace Mvc01.Controllers
         //private static Machine machine = new Machine();
         private static List<Machine> machines = new List<Machine>
         {
-            new Machine(1, new[] { 5m, 10m }),
-            new Machine(2, new[] { 1m, 10m }),
+            new Machine(1),
+            new Machine(2),
             new Machine(3),
         };
 

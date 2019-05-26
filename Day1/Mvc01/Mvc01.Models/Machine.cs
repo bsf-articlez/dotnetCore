@@ -16,19 +16,20 @@ namespace Mvc01.Models
         //{
 
         //}
-        public Machine(int id, decimal[] acceptableCoins = null)
+        public Machine(int id) //, decimal[] acceptableCoins = null)
         {
             Id = id;
-            _acceptableCoins = acceptableCoins ?? new[] { 1m, 5m, 10m }; // type inference. // อนุมาณ
+            //_acceptableCoins = acceptableCoins ?? new[] { 1m, 5m, 10m }; // type inference. // อนุมาณ
+            _acceptableCoins = new[] { 1m, 5m, 10m }; // type inference. // อนุมาณ
             // left is null, return right.
         }
 
         public int Id { get; set; }
 
-        public decimal TotalAmount => _totalAmount;
-        public bool IsOn => _isOn;
-        public bool IsLidOpen => _isLidOpen;
-        public decimal[] AcceptableCoins => _acceptableCoins;
+        public decimal TotalAmount { get => _totalAmount; private set => _totalAmount = value; }
+        public bool IsOn { get => _isOn; private set => _isOn = value; }
+        public bool IsLidOpen { get => _isLidOpen; private set => _isLidOpen = value; }
+        public decimal[] AcceptableCoins { get => _acceptableCoins; private set => _acceptableCoins = value; }
 
         public void TogglePower()
         {
