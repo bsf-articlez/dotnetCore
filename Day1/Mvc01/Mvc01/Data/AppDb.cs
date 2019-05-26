@@ -15,5 +15,13 @@ namespace Mvc01.Data
 
         }
         public DbSet<Product> Products { get; set; } // Map table
+        public DbSet<Person> People { get; set; } // Map table
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Person>().OwnsOne(x => x.Home);
+            modelBuilder.Entity<Person>().OwnsOne(x => x.Office);
+        }
     }
 }

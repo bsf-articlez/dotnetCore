@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Mvc01.Data;
 
 namespace Mvc01.Migrations
 {
     [DbContext(typeof(AppDb))]
-    partial class AppDbModelSnapshot : ModelSnapshot
+    [Migration("20190526025541_update06")]
+    partial class update06
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,7 +31,7 @@ namespace Mvc01.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("People");
+                    b.ToTable("Person");
                 });
 
             modelBuilder.Entity("Mvc01.Models.Product", b =>
@@ -71,7 +73,7 @@ namespace Mvc01.Migrations
 
                             b1.HasKey("PersonId");
 
-                            b1.ToTable("People");
+                            b1.ToTable("Person");
 
                             b1.HasOne("Mvc01.Models.Person")
                                 .WithOne("Home")
@@ -95,7 +97,7 @@ namespace Mvc01.Migrations
 
                             b1.HasKey("PersonId");
 
-                            b1.ToTable("People");
+                            b1.ToTable("Person");
 
                             b1.HasOne("Mvc01.Models.Person")
                                 .WithOne("Office")
