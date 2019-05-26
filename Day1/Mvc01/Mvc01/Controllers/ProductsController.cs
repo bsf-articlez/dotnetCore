@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Mvc01.Data;
 using Mvc01.Models;
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Mvc01.Controllers
 {
@@ -20,9 +22,15 @@ namespace Mvc01.Controllers
             this.env = env;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            //var items = db.Products.Include(x => x.Pictures).ToList();
+
             var items = db.Products.ToList();
+            foreach (var item in items)
+            {
+                await db.Entry(item).Collection(x => x.Pictures).LoadAsync();
+            }
             return View(items);
         }
 
@@ -68,6 +76,48 @@ namespace Mvc01.Controllers
             }
 
             return View(item);
+        }
+
+        // GET: /products/{productId}/pictures/{pictureId}
+        // pictureId starts from 1, 2, 3, ... for each product.
+        [HttpGet("products/{productId}/pictures/{pictureSeq}")]
+        public IActionResult Pictures(int productId, int pictureSeq)
+        {
+            var p = db.Products.Include(x => x.Pictures)
+                      .SingleOrDefault(x => x.Id == productId);
+
+            ProductPicture pic = p.Pictures.Skip(pictureSeq - 1).Take(1).SingleOrDefault();
+            if (pic == null) return NotFound();
+
+            var filePath = Path.Combine(env.ContentRootPath, "Files", pic.Url);
+
+            return PhysicalFile(filePath, "image/jpeg");
+        }
+
+        public IActionResult Edit(int id)
+        {
+            return View(db.Products.Include(x => x.Pictures).SingleOrDefault(x => x.Id == id));
+        }
+
+        [HttpPost]
+        public IActionResult Edit(Product item, IFormFile[] pics)
+        {
+            //if (db.Products.Any(x => x.Name == item.Name))
+            //    ModelState.AddModelError(nameof(Product.Name), "Duplicate name.");
+
+            if (ModelState.IsValid)
+            {
+                db.Update(item);
+                db.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(item);
+        }
+
+        public IActionResult Details(int id)
+        {
+            return View(db.Products.Include(x => x.Pictures).SingleOrDefault(x => x.Id == id));
         }
     }
 }
