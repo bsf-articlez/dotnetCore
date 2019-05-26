@@ -20,7 +20,7 @@ namespace Mvc01.Models
         [Range(0, 999999)] // Range data
         [Column("Price", TypeName = "decimal(18, 4)")] // Fix data column
         public decimal Price { get; set; }
-        public ICollection<ProductPicture> Pictures { get; set; } = new HashSet<ProductPicture>();
+        virtual public ICollection<ProductPicture> Pictures { get; set; } = new HashSet<ProductPicture>();
         public DateTime CreateDate { get; set; }
     }
 }

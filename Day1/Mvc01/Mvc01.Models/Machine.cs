@@ -29,7 +29,7 @@ namespace Mvc01.Models
         public bool IsOn { get => _isOn; private set => _isOn = value; }
         public bool IsLidOpen { get => _isLidOpen; private set => _isLidOpen = value; }
         public decimal[] AcceptableCoins { get => _acceptableCoins; private set => _acceptableCoins = value; }
-        public ICollection<Slot> Slots { get; set; } = new HashSet<Slot>();
+        public virtual ICollection<Slot> Slots { get; set; } = new HashSet<Slot>();
 
         public void TogglePower()
         {
