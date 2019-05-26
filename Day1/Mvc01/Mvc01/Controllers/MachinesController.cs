@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.DependencyInjection;
+using Mvc01.Data;
 using Mvc01.Models;
 using Mvc01.Services;
 using System;
@@ -12,19 +13,13 @@ namespace Mvc01.Controllers
 {
     public class MachinesController : Controller
     {
-        //private static Machine machine = new Machine();
-        private static List<Machine> machines = new List<Machine>
-        {
-            new Machine(1),
-            new Machine(2),
-            new Machine(3),
-        };
-
         private readonly IEnumerable<ILog> logs;
+        private readonly AppDb db;
 
-        public MachinesController(IEnumerable<ILog> logs)
+        public MachinesController(IEnumerable<ILog> logs, AppDb db)
         {
             this.logs = logs;
+            this.db = db;
         }
 
         // /machines/index/3
@@ -32,22 +27,23 @@ namespace Mvc01.Controllers
         {
             if (id == null) id = 1;
 
-            var machine = machines.SingleOrDefault(x => x.Id == id);
+            var machine = db.Machines.Find(id);
 
             if (machine == null) return NotFound();
 
-            ViewBag.MachineList = new SelectList(machines, nameof(machine.Id), nameof(machine.Id), id);
+            ViewBag.MachineList = new SelectList(db.Machines, nameof(machine.Id), nameof(machine.Id), id);
 
             return View(machine);
         }
 
         public async Task<IActionResult> InsertCoin(int id, decimal amount, string color)
         {
-            var machine = machines.SingleOrDefault(x => x.Id == id);
+            var machine = db.Machines.Find(id);
 
             try
             {
                 machine.AcceptsCoin(amount);
+                db.SaveChanges();
 
                 foreach (var log in logs)
                 {
@@ -66,22 +62,25 @@ namespace Mvc01.Controllers
 
         public IActionResult CancelBuying(int id)
         {
-            var machine = machines.SingleOrDefault(x => x.Id == id);
+            var machine = db.Machines.Find(id);
             machine.CancelBuying();
+            db.SaveChanges();
             return RedirectToAction(nameof(Index), new { id });
         }
 
         public IActionResult TogglePower(int id)
         {
-            var machine = machines.SingleOrDefault(x => x.Id == id);
+            var machine = db.Machines.Find(id);
             machine.TogglePower();
+            db.SaveChanges();
             return RedirectToAction(nameof(Index), new { id });
         }
 
         public IActionResult ToggleLid(int id)
         {
-            var machine = machines.SingleOrDefault(x => x.Id == id);
+            var machine = db.Machines.Find(id);
             machine.ToggleLid();
+            db.SaveChanges();
             return RedirectToAction(nameof(Index), new { id });
         }
     }
