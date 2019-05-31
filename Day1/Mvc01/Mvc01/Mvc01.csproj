@@ -16,7 +16,9 @@
 
 
   <ItemGroup>
+    <ProjectReference Include="..\Mvc01.Data\Mvc01.Data.csproj" />
     <ProjectReference Include="..\Mvc01.Models\Mvc01.Models.csproj" />
+    <ProjectReference Include="..\Mvc01.Services\Mvc01.Services.csproj" />
   </ItemGroup>
 
 
