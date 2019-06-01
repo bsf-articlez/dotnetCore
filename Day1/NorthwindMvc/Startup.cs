@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using NorthwindMvc.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NorthwindMvc.Northwind.Models;
 
 namespace NorthwindMvc
 {
@@ -43,6 +44,11 @@ namespace NorthwindMvc
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddDbContext<AppDb>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString(nameof(AppDb)));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

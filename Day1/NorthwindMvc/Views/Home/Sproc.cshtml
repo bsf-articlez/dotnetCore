@@ -1,0 +1,84 @@
+﻿@model IEnumerable<NorthwindMvc.Northwind.Models.SalesByCategoryResult>
+
+@{
+    ViewData["Title"] = "Sproc";
+
+    var sum = 0m;
+}
+
+<h1>Sproc</h1>
+
+<div class="card my-4">
+    <div class="card-body row">
+        <select id="cat" asp-items="@ViewBag.CategoryList" class="form-control w-50"></select>
+        <select id="year" asp-items="@ViewBag.YearList" class="form-control w-50">
+            <option>(Order year)</option>
+        </select>
+    </div>
+</div>
+
+<table id="output" class="table">
+    <thead>
+        <tr class="bg-light">
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th class="text-right">
+                @Html.DisplayNameFor(model => model.Total)
+            </th>
+        </tr>
+    </thead>
+    <tbody id="output_body">
+        @foreach (var item in Model)
+        {
+            sum += item.Total;
+            <tr>
+                <td class="border-right">
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                <td class="text-right">
+                    @item.Total.ToString("n2")
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr class="bg-light">
+            <td><strong>Net Total</strong></td>
+            <td class="text-right" id="netTotal"><strong>@sum.ToString("n2")</strong></td>
+        </tr>
+    </tfoot>
+</table>
+
+@section Scripts {
+    <script>
+        var netTotal;
+
+        $('#cat, #year').change(function () {
+            const catName = $('#cat').val();
+            const year = $('#year').val();
+            const url = `/Home/SprocV1?category=${catName}&year=${year}`;
+
+            // $.get(url)
+            // $.post(url, data)
+            // $.getJSON(url)
+            // $.ajax()
+            const promise = $.getJSON(url);
+            promise.then(function (res) {
+                $('#output_body').empty();
+                $('#netTotal').empty();
+                netTotal = 0;
+                res.forEach(x => {
+                    $('#output_body').append('<tr>');
+                    const s = `<td class="border-right">${x.productName}</td><td class="text-right">${x.total.toFixed(2)}</td>`
+                    $('#output_body').append(s);
+                    $('#output_body').append('</tr>');
+                    netTotal += x.total;
+                })
+                let strNetTotal = `<strong>${netTotal.toFixed(2)}</strong>`
+                $('#netTotal').append(strNetTotal);
+                console.log(res)
+            })
+        });
+    </script>
+}
