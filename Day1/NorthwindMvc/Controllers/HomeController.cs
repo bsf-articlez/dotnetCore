@@ -39,6 +39,12 @@ namespace NorthwindMvc.Controllers
             return Json(items);
         }
 
+        public IActionResult SprocV2(string category, int year)
+        {
+            var items = db.sp_SalesByCategories(category, year);
+            return PartialView(items);
+        }
+
         public IActionResult Privacy()
         {
             return View();

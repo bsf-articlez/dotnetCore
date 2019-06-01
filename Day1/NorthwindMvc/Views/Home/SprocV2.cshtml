@@ -1,0 +1,36 @@
+﻿@model IEnumerable<NorthwindMvc.Northwind.Models.SalesByCategoryResult>
+@{ 
+    var sum = 0m;
+}
+<table class="table">
+    <thead>
+        <tr class="bg-light">
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th class="text-right">
+                @Html.DisplayNameFor(model => model.Total)
+            </th>
+        </tr>
+    </thead>
+    <tbody id="output_body">
+        @foreach (var item in Model)
+        {
+            sum += item.Total;
+            <tr>
+                <td class="border-right">
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                <td class="text-right">
+                    <money amount="@item.Total" base-amount="5000"></money>
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr class="bg-light">
+            <td><strong>Net Total</strong></td>
+            <td class="text-right" id="netTotal"><money id="dataNetTotal" amount="@sum" base-amount="5000"></money></td>
+        </tr>
+    </tfoot>
+</table>
