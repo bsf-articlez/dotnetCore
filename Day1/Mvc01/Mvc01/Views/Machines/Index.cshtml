@@ -4,7 +4,7 @@
 }
 
 @*<h1>Vending Machine @Model.Id</h1>*@
-<h1>Vending Machine <select id="ddlMachine" asp-items="@ViewBag.MachineList"></select></h1>
+<h1>Vending Machine <select id="ddlMachine" asp-items="@ViewBag.MachineList"></select> Total Sell Amount: @Model.TotalSellAmount THB</h1>
 
 @*<select id="ddlMachine" asp-items="@ViewBag.MachineList"></select>*@
 
@@ -33,15 +33,22 @@
 </div>
 
 <div class="mt-2">
-    @foreach (var slot in Model.Slots)
-    {
-        <button class="btn btn-outline-success">
-            <div>@slot.Product.Name</div>
-            <div>@slot.Product.Price</div>
-            <div>@slot.Quantity</div>
-        </button>
-    }
+    <form asp-controller="Machines" method="post">
+        @foreach (var slot in Model.Slots)
+        {
+            string btnAble = slot.SellAble ? "btn-success" : "btn-outline-success";
+
+            <button class="btn @btnAble" asp-action="BuyingProduct" asp-route-machineId="@Model.Id" asp-route-slotId="@slot.Id">
+                <div><img src="~/products/@slot.Product.Id/pictures/@slot.Product.Pictures.LastOrDefault().Id" width="50" class="rounded" /></div>
+                <div>@slot.Product.Name</div>
+                <div>@slot.Product.Price</div>
+                <div>@slot.Quantity</div>
+            </button>
+
+        }
+    </form>
 </div>
+
 
 <div class="card border-dark shadow my-4">
     <div class="card-body">

@@ -8,6 +8,7 @@ namespace Mvc01.Models
     {
         // backing fields => field use with property.
         private decimal _totalAmount = 0;
+        private decimal _totalSellAmount = 0;
         private bool _isOn = false;
         private bool _isLidOpen = false;
         private decimal[] _acceptableCoins;
@@ -30,6 +31,7 @@ namespace Mvc01.Models
         public bool IsLidOpen { get => _isLidOpen; private set => _isLidOpen = value; }
         public decimal[] AcceptableCoins { get => _acceptableCoins; private set => _acceptableCoins = value; }
         public virtual ICollection<Slot> Slots { get; set; } = new HashSet<Slot>();
+        public decimal TotalSellAmount { get => _totalSellAmount; private set => _totalSellAmount = value; }
 
         public void TogglePower()
         {
@@ -46,6 +48,7 @@ namespace Mvc01.Models
         public void CloseLid()
         {
             _isLidOpen = false;
+            _totalSellAmount = 0;
         }
 
         private void TurnOn()
@@ -80,6 +83,21 @@ namespace Mvc01.Models
         public void CancelBuying()
         {
             _totalAmount = 0m;
+        }
+
+        public void AcceptBuying(decimal amount)
+        {
+            _totalSellAmount += amount;
+        }
+
+        public void IsSellable(Slot slot)
+        {
+            slot.SellAble = false;
+        }
+
+        public void ReduceProductQuantity(ICollection<Slot> slots, int slotId)
+        {
+            slots.Where(x => x.Id == slotId).SingleOrDefault().Quantity -= 1;
         }
     }
 }

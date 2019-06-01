@@ -43,6 +43,12 @@ namespace Mvc01.Controllers
             try
             {
                 machine.AcceptsCoin(amount);
+                
+                foreach (var slot in machine.Slots)
+                {
+                    slot.SellAble = machine.TotalAmount >= slot.Product.Price;
+                }
+
                 db.SaveChanges();
 
                 foreach (var log in logs)
@@ -64,6 +70,10 @@ namespace Mvc01.Controllers
         {
             var machine = db.Machines.Find(id);
             machine.CancelBuying();
+            foreach (var slot in machine.Slots)
+            {
+                slot.SellAble = machine.TotalAmount >= slot.Product.Price;
+            }
             db.SaveChanges();
             return RedirectToAction(nameof(Index), new { id });
         }
@@ -72,6 +82,10 @@ namespace Mvc01.Controllers
         {
             var machine = db.Machines.Find(id);
             machine.TogglePower();
+            foreach (var slot in machine.Slots)
+            {
+                slot.SellAble = machine.TotalAmount >= slot.Product.Price;
+            }
             db.SaveChanges();
             return RedirectToAction(nameof(Index), new { id });
         }
@@ -82,6 +96,27 @@ namespace Mvc01.Controllers
             machine.ToggleLid();
             db.SaveChanges();
             return RedirectToAction(nameof(Index), new { id });
+        }
+
+        public IActionResult BuyingProduct(int machineId, int slotId)
+        {
+            var machine = db.Machines.Find(machineId);
+            var product = machine.Slots.Where(x => x.Id == slotId && x.Quantity > 0).Select(x => x.Product).SingleOrDefault();
+            if (product == null) goto NotBuy;
+            if (machine.TotalAmount >= product.Price)
+            {
+                machine.AcceptBuying(product.Price);
+                machine.ReduceProductQuantity(machine.Slots, slotId);
+                foreach (var slot in machine.Slots)
+                {
+                    machine.IsSellable(slot);
+                }
+                machine.CancelBuying();
+                db.SaveChanges();
+            }
+            
+            NotBuy:
+            return RedirectToAction(nameof(Index), new { id = machineId });
         }
     }
 }

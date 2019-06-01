@@ -80,13 +80,14 @@ namespace Mvc01.Controllers
 
         // GET: /products/{productId}/pictures/{pictureId}
         // pictureId starts from 1, 2, 3, ... for each product.
-        [HttpGet("products/{productId}/pictures/{pictureSeq}")]
-        public IActionResult Pictures(int productId, int pictureSeq)
+        [HttpGet("products/{productId}/pictures/{pictureId}")]
+        public IActionResult Pictures(int productId, int pictureId)
         {
             var p = db.Products.Include(x => x.Pictures)
                       .SingleOrDefault(x => x.Id == productId);
 
-            ProductPicture pic = p.Pictures.Skip(pictureSeq - 1).Take(1).SingleOrDefault();
+            ProductPicture pic = p.Pictures.Where(x => x.Id == pictureId).SingleOrDefault();
+            //ProductPicture pic = p.Pictures.Skip(pictureSeq - 1).Take(1).SingleOrDefault();
             if (pic == null) return NotFound();
 
             var filePath = Path.Combine(env.ContentRootPath, "Files", pic.Url);
