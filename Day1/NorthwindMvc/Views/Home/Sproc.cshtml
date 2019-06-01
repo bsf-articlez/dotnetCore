@@ -1,37 +1,39 @@
 ﻿@model IEnumerable<NorthwindMvc.Northwind.Models.SalesByCategoryResult>
 
-@{
+    @{
     ViewData["Title"] = "Sproc";
 
     var sum = 0m;
-}
+    }
 
-<h1>Sproc</h1>
+    <h1>Sproc</h1>
 
-<div class="card my-4">
-    <div class="card-body row">
-        <select id="cat" asp-items="@ViewBag.CategoryList" class="form-control w-50"></select>
-        <select id="year" asp-items="@ViewBag.YearList" class="form-control w-50">
-            <option>(Order year)</option>
-        </select>
+    <div class="card my-4">
+        <div class="card-body row">
+            <select id="cat" asp-items="@ViewBag.CategoryList" class="form-control w-50"></select>
+            <select id="year" asp-items="@ViewBag.YearList" class="form-control w-50">
+                <option>(Order year)</option>
+            </select>
+        </div>
     </div>
-</div>
 
-<div id="v1">
-    <table id="output" class="table">
-        <thead>
-            <tr class="bg-light">
-                <th>
-                    @Html.DisplayNameFor(model => model.ProductName) V1 JSON
-                </th>
-                <th class="text-right">
-                    @Html.DisplayNameFor(model => model.Total)
-                </th>
-            </tr>
-        </thead>
-        <tbody id="output_body">
-            @foreach (var item in Model)
-            {
+    <vc:sales-by-category-chart category="Seafood" year="1996"></vc:sales-by-category-chart>
+
+    <div id="v1">
+        <table id="output" class="table">
+            <thead>
+                <tr class="bg-light">
+                    <th>
+                        @Html.DisplayNameFor(model => model.ProductName) V1 JSON
+                    </th>
+                    <th class="text-right">
+                        @Html.DisplayNameFor(model => model.Total)
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="output_body">
+                @foreach (var item in Model)
+                {
                 sum += item.Total;
                 <tr>
                     <td class="border-right">
@@ -41,32 +43,32 @@
                         @item.Total.ToString("n2")
                     </td>
                 </tr>
-            }
-        </tbody>
-        <tfoot>
-            <tr class="bg-light">
-                <td><strong>Net Total</strong></td>
-                <td class="text-right" id="netTotal"><strong>@sum.ToString("n2")</strong></td>
-            </tr>
-        </tfoot>
-    </table>
-</div>
+                }
+            </tbody>
+            <tfoot>
+                <tr class="bg-light">
+                    <td><strong>Net Total</strong></td>
+                    <td class="text-right" id="netTotal"><strong>@sum.ToString("n2")</strong></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
 
-<div id="v2">
-    <table class="table">
-        <thead>
-            <tr class="bg-light">
-                <th>
-                    @Html.DisplayNameFor(model => model.ProductName) V2 Patial View
-                </th>
-                <th class="text-right">
-                    @Html.DisplayNameFor(model => model.Total)
-                </th>
-            </tr>
-        </thead>
-        <tbody id="output_body">
-            @foreach (var item in Model)
-            {
+    <div id="v2">
+        <table class="table">
+            <thead>
+                <tr class="bg-light">
+                    <th>
+                        @Html.DisplayNameFor(model => model.ProductName) V2 Patial View
+                    </th>
+                    <th class="text-right">
+                        @Html.DisplayNameFor(model => model.Total)
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="output_body">
+                @foreach (var item in Model)
+                {
                 sum += item.Total;
                 <tr>
                     <td class="border-right">
@@ -76,18 +78,18 @@
                         @item.Total.ToString("n2")
                     </td>
                 </tr>
-            }
-        </tbody>
-        <tfoot>
-            <tr class="bg-light">
-                <td><strong>Net Total</strong></td>
-                <td class="text-right" id="netTotal"><money amount="@sum"></money></td>
-            </tr>
-        </tfoot>
-    </table>
-</div>
+                }
+            </tbody>
+            <tfoot>
+                <tr class="bg-light">
+                    <td><strong>Net Total</strong></td>
+                    <td class="text-right" id="netTotal"><money amount="@sum"></money></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
 
-@section Scripts {
+    @section Scripts {
     <script>
         var netTotal;
 
@@ -123,4 +125,35 @@
             })
         });
     </script>
-}
+
+    <script>
+        var charts = $(".mychart");
+
+        for (let c of charts) {
+            var categories = eval("(" + $(c).attr('data-name') + ")");
+            var totals = eval("(" + $(c).attr('data-total') + ")");
+
+            var myChart = Highcharts.chart(c, {
+                chart: {
+                    type: 'bar'
+                },
+                title: {
+                    text: 'Sales By Category'
+                },
+                xAxis: {
+                    categories: categories
+                },
+                yAxis: {
+                    title: {
+                        text: 'Fruit eaten'
+                    }
+                },
+                series: [{
+                    name: 'Total',
+                    data: totals
+                }]
+            });
+
+        } // for..of
+    </script>
+    }
